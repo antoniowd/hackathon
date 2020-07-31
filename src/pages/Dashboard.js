@@ -105,7 +105,17 @@ const useStyles = makeStyles((theme) => ({
     border: `2px solid ${theme.palette.primary.main}`,
     marginBottom: theme.spacing(2),
   },
+  cardMaisInfectados: {
+    border: `2px solid ${theme.palette.primary.main}`,
+    marginBottom: theme.spacing(2),
+  },
 }));
+
+let temp = [...sp];
+temp.sort((a, b) => b.casos - a.casos);
+const [caso1, caso2, caso3] = temp;
+temp.sort((a, b) => a.casos - b.casos);
+const [sau1, sau2, sau3] = temp;
 
 export default function Dashboard() {
   const classes = useStyles();
@@ -264,6 +274,75 @@ export default function Dashboard() {
             <Typography variant="h5" component="h1" color="primary">
               {dicas[dicasIndex]}
             </Typography>
+          </CardContent>
+        </Card>
+
+        <Card className={classes.cardMaisInfectados}>
+          <CardContent>
+            <Grid container>
+              <Grid item xs={6}>
+                <Box className={classes.boxCasosAlto} component="div" m={1}>
+                  <Typography variant="h5" component="span">
+                    Municipios com mais casos
+                  </Typography>
+                </Box>
+                <Typography
+                  variant="h6"
+                  component="h1"
+                  color="primary"
+                  style={{ textAlign: "center" }}
+                >
+                  {caso1.municipio}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  component="h1"
+                  color="primary"
+                  style={{ textAlign: "center" }}
+                >
+                  {caso2.municipio}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  component="h1"
+                  color="primary"
+                  style={{ textAlign: "center" }}
+                >
+                  {caso3.municipio}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Box className={classes.boxCasosBajo} component="div" m={1}>
+                  <Typography variant="h5" component="span">
+                    Municipios com mais casos
+                  </Typography>
+                </Box>
+                <Typography
+                  variant="h6"
+                  component="h1"
+                  color="primary"
+                  style={{ textAlign: "center" }}
+                >
+                  {sau1.municipio}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  component="h1"
+                  color="primary"
+                  style={{ textAlign: "center" }}
+                >
+                  {sau2.municipio}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  component="h1"
+                  color="primary"
+                  style={{ textAlign: "center" }}
+                >
+                  {sau3.municipio}
+                </Typography>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       </Container>

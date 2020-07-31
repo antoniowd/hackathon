@@ -3834,7 +3834,7 @@ const sp = [
     populacion: 91278,
   },
   {
-    municipio: "ZACARIAS ",
+    municipio: "ZACARIAS",
     casos: 206,
     muertes: 6,
     populacion: 2574,
