@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Container,
@@ -9,14 +9,36 @@ import {
   Card,
   CardContent,
   TextField,
+  Grid,
+  Box,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Menu as MenuIcon } from "@material-ui/icons";
+import sp from "../sp-municipios";
+
+const dicas = [
+  "Caso possível coloque um álcool gel na entrada da sua, esterilize as mãos assim que chegar",
+  "Retire os sapatos ao entrar em casa",
+  "É aconselhável lavar as roupas com sabão pós uso",
+  "Lave as áreas com maior exposição: mãos, punhos e seu rosto. Ou tome banho quando possível",
+  "Limpe seu celular com álcool 70, e óculos ou com água e sabão",
+  "Após receber encomendas, ir ao mercado ou sair de casa para outras necessidades. Não se esqueça de lavar as mãos com água e sabão",
+  "Esfregue as palmas com as mãos retas em sentido vai e vem",
+  "Esfregue o dorso e entre os dedos de cada mão",
+  "Faça uma concha com cada mão e esfregue uma na outra",
+  "Lave as pontas dos dedos e as unhas de cada mão esfregando-os na palma da, outra mão",
+  "Lave os polegares e os punhos",
+  "Abra ou feche a torneira com os cotovelos",
+  "Se você conversa por Libras, evite tocar no rosto durante a conversação",
+  "Higienize sempre as mãos e o antebraço",
+  "Evite sair de casa caso não haja necessidade, mas caso saia: sempre ande de máscara e leve álcool em gel com você caso possível",
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     textAlign: "center",
+    maxWidth: 700,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -40,117 +62,68 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "auto",
     marginTop: theme.spacing(1),
   },
-}));
-
-const top100Films = [
-  { title: "The Shawshank Redemption", year: 1994 },
-  { title: "The Godfather", year: 1972 },
-  { title: "The Godfather: Part II", year: 1974 },
-  { title: "The Dark Knight", year: 2008 },
-  { title: "12 Angry Men", year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: "Pulp Fiction", year: 1994 },
-  { title: "The Lord of the Rings: The Return of the King", year: 2003 },
-  { title: "The Good, the Bad and the Ugly", year: 1966 },
-  { title: "Fight Club", year: 1999 },
-  { title: "The Lord of the Rings: The Fellowship of the Ring", year: 2001 },
-  { title: "Star Wars: Episode V - The Empire Strikes Back", year: 1980 },
-  { title: "Forrest Gump", year: 1994 },
-  { title: "Inception", year: 2010 },
-  { title: "The Lord of the Rings: The Two Towers", year: 2002 },
-  { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-  { title: "Goodfellas", year: 1990 },
-  { title: "The Matrix", year: 1999 },
-  { title: "Seven Samurai", year: 1954 },
-  { title: "Star Wars: Episode IV - A New Hope", year: 1977 },
-  { title: "City of God", year: 2002 },
-  { title: "Se7en", year: 1995 },
-  { title: "The Silence of the Lambs", year: 1991 },
-  { title: "It's a Wonderful Life", year: 1946 },
-  { title: "Life Is Beautiful", year: 1997 },
-  { title: "The Usual Suspects", year: 1995 },
-  { title: "Léon: The Professional", year: 1994 },
-  { title: "Spirited Away", year: 2001 },
-  { title: "Saving Private Ryan", year: 1998 },
-  { title: "Once Upon a Time in the West", year: 1968 },
-  { title: "American History X", year: 1998 },
-  { title: "Interstellar", year: 2014 },
-  { title: "Casablanca", year: 1942 },
-  { title: "City Lights", year: 1931 },
-  { title: "Psycho", year: 1960 },
-  { title: "The Green Mile", year: 1999 },
-  { title: "The Intouchables", year: 2011 },
-  { title: "Modern Times", year: 1936 },
-  { title: "Raiders of the Lost Ark", year: 1981 },
-  { title: "Rear Window", year: 1954 },
-  { title: "The Pianist", year: 2002 },
-  { title: "The Departed", year: 2006 },
-  { title: "Terminator 2: Judgment Day", year: 1991 },
-  { title: "Back to the Future", year: 1985 },
-  { title: "Whiplash", year: 2014 },
-  { title: "Gladiator", year: 2000 },
-  { title: "Memento", year: 2000 },
-  { title: "The Prestige", year: 2006 },
-  { title: "The Lion King", year: 1994 },
-  { title: "Apocalypse Now", year: 1979 },
-  { title: "Alien", year: 1979 },
-  { title: "Sunset Boulevard", year: 1950 },
-  {
-    title:
-      "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb",
-    year: 1964,
+  cardCasos: {
+    border: `2px solid ${theme.palette.primary.main}`,
+    marginBottom: theme.spacing(2),
   },
-  { title: "The Great Dictator", year: 1940 },
-  { title: "Cinema Paradiso", year: 1988 },
-  { title: "The Lives of Others", year: 2006 },
-  { title: "Grave of the Fireflies", year: 1988 },
-  { title: "Paths of Glory", year: 1957 },
-  { title: "Django Unchained", year: 2012 },
-  { title: "The Shining", year: 1980 },
-  { title: "WALL·E", year: 2008 },
-  { title: "American Beauty", year: 1999 },
-  { title: "The Dark Knight Rises", year: 2012 },
-  { title: "Princess Mononoke", year: 1997 },
-  { title: "Aliens", year: 1986 },
-  { title: "Oldboy", year: 2003 },
-  { title: "Once Upon a Time in America", year: 1984 },
-  { title: "Witness for the Prosecution", year: 1957 },
-  { title: "Das Boot", year: 1981 },
-  { title: "Citizen Kane", year: 1941 },
-  { title: "North by Northwest", year: 1959 },
-  { title: "Vertigo", year: 1958 },
-  { title: "Star Wars: Episode VI - Return of the Jedi", year: 1983 },
-  { title: "Reservoir Dogs", year: 1992 },
-  { title: "Braveheart", year: 1995 },
-  { title: "M", year: 1931 },
-  { title: "Requiem for a Dream", year: 2000 },
-  { title: "Amélie", year: 2001 },
-  { title: "A Clockwork Orange", year: 1971 },
-  { title: "Like Stars on Earth", year: 2007 },
-  { title: "Taxi Driver", year: 1976 },
-  { title: "Lawrence of Arabia", year: 1962 },
-  { title: "Double Indemnity", year: 1944 },
-  { title: "Eternal Sunshine of the Spotless Mind", year: 2004 },
-  { title: "Amadeus", year: 1984 },
-  { title: "To Kill a Mockingbird", year: 1962 },
-  { title: "Toy Story 3", year: 2010 },
-  { title: "Logan", year: 2017 },
-  { title: "Full Metal Jacket", year: 1987 },
-  { title: "Dangal", year: 2016 },
-  { title: "The Sting", year: 1973 },
-  { title: "2001: A Space Odyssey", year: 1968 },
-  { title: "Singin' in the Rain", year: 1952 },
-  { title: "Toy Story", year: 1995 },
-  { title: "Bicycle Thieves", year: 1948 },
-  { title: "The Kid", year: 1921 },
-  { title: "Inglourious Basterds", year: 2009 },
-  { title: "Snatch", year: 2000 },
-  { title: "3 Idiots", year: 2009 },
-  { title: "Monty Python and the Holy Grail", year: 1975 },
-];
+  boxCasos: {
+    backgroundColor: theme.palette.primary.main,
+    color: "#ffffff",
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  boxCasosAlto: {
+    backgroundColor: "#dd4b39",
+    color: "#ffffff",
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  boxCasosMedio: {
+    backgroundColor: "#f39c12",
+    color: "#ffffff",
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  boxCasosBajo: {
+    backgroundColor: "#00a65a",
+    color: "#ffffff",
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  cardMuertes: {
+    backgroundColor: theme.palette.primary.main,
+    color: "#ffffff",
+    marginBottom: theme.spacing(2),
+  },
+  boxMuertes: {
+    backgroundColor: "#ffffff",
+    color: theme.palette.primary.main,
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  cardDicas: {
+    border: `2px solid ${theme.palette.primary.main}`,
+    marginBottom: theme.spacing(2),
+  },
+}));
 
 export default function Dashboard() {
   const classes = useStyles();
+  const [municipio, setMunicipio] = useState({});
+  const [dicasIndex, setDicasIndex] = useState(
+    Math.floor(Math.random() * dicas.length)
+  );
+
+  const handleChange = (e, option) => {
+    setMunicipio({
+      ...option,
+      infectado_percent: parseFloat((option.casos * 100) / option.populacion),
+      muertes_percent: parseFloat((option.muertes * 100) / option.populacion),
+    });
+
+    setDicasIndex(Math.floor(Math.random() * dicas.length));
+  };
+
   return (
     <>
       <AppBar position="static">
@@ -164,7 +137,7 @@ export default function Dashboard() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            LUPA
+            Guardião do bem
           </Typography>
         </Toolbar>
       </AppBar>
@@ -174,11 +147,13 @@ export default function Dashboard() {
           freeSolo
           id="free-solo-2-demo"
           disableClearable
-          options={top100Films.map((option) => option.title)}
+          onChange={handleChange}
+          options={sp}
+          getOptionLabel={(o) => o.municipio}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Procure um municipio"
+              label="Qual é seu município? "
               margin="normal"
               variant="outlined"
               InputProps={{ ...params.InputProps, type: "search" }}
@@ -186,13 +161,108 @@ export default function Dashboard() {
           )}
         />
 
-        <Card>
+        {municipio.casos !== undefined && (
+          <Card className={classes.cardCasos}>
+            <CardContent>
+              <Typography variant="h5" component="h2" color="primary">
+                O total de confirmados até agora é
+              </Typography>
+              <Typography variant="h2" component="h1" color="primary">
+                {municipio.casos}
+              </Typography>
+              <Grid container>
+                <Grid item xs={6}>
+                  <Typography variant="body1" component="span" color="primary">
+                    Porcento de pessoas infetadas
+                  </Typography>
+                  <Box className={classes.boxCasos} component="div" m={1}>
+                    <Typography variant="h4" component="span">
+                      {municipio.infectado_percent > 0
+                        ? municipio.infectado_percent.toFixed(0)
+                        : String(municipio.infectado_percent).slice(
+                            0,
+                            String(municipio.infectado_percent).indexOf(".") + 3
+                          )}
+                      %
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1" component="span" color="primary">
+                    Risco de contaminação
+                  </Typography>
+                  {municipio.infectado_percent >= 40 && (
+                    <Box className={classes.boxCasosAlto} component="div" m={1}>
+                      <Typography variant="h4" component="span">
+                        Alto
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {municipio.infectado_percent < 40 &&
+                    municipio.infectado_percent >= 20 && (
+                      <Box
+                        className={classes.boxCasosMedio}
+                        component="div"
+                        m={1}
+                      >
+                        <Typography variant="h4" component="span">
+                          Medio
+                        </Typography>
+                      </Box>
+                    )}
+
+                  {municipio.infectado_percent < 20 && (
+                    <Box className={classes.boxCasosBajo} component="div" m={1}>
+                      <Typography variant="h4" component="span">
+                        Baixo
+                      </Typography>
+                    </Box>
+                  )}
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        )}
+
+        {municipio.muertes !== undefined && (
+          <Card className={classes.cardMuertes}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                O total de obitos até agora é
+              </Typography>
+              <Typography variant="h2" component="h1">
+                {municipio.muertes}
+              </Typography>
+              <Typography variant="body1" component="span">
+                Porcento de pessoas infetadas
+              </Typography>
+              <Grid container alignItems="center" justify="center">
+                <Grid item xs={6}>
+                  <Box className={classes.boxMuertes} component="div" m={1}>
+                    <Typography variant="h4" component="span">
+                      {municipio.muertes_percent > 0
+                        ? municipio.muertes_percent.toFixed(0)
+                        : String(municipio.muertes_percent).slice(
+                            0,
+                            String(municipio.muertes_percent).indexOf(".") + 3
+                          )}
+                      %
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        )}
+
+        <Card className={classes.cardDicas}>
           <CardContent>
-            <Typography variant="h5" component="h2">
-              CASOS: 52
+            <Typography variant="h4" component="h2" color="primary">
+              Uma dica
             </Typography>
-            <Typography variant="h5" component="h2">
-              MORTES: 52
+            <Typography variant="h5" component="h1" color="primary">
+              {dicas[dicasIndex]}
             </Typography>
           </CardContent>
         </Card>
