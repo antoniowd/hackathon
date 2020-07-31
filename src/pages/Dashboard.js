@@ -280,7 +280,7 @@ export default function Dashboard() {
         <Card className={classes.cardMaisInfectados}>
           <CardContent>
             <Grid container>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Box className={classes.boxCasosAlto} component="div" m={1}>
                   <Typography variant="h5" component="span">
                     Municipios com mais casos
@@ -290,7 +290,7 @@ export default function Dashboard() {
                   variant="h6"
                   component="h1"
                   color="primary"
-                  style={{ textAlign: "center" }}
+                  style={{ textAlign: "left" }}
                 >
                   {caso1.municipio}
                 </Typography>
@@ -298,7 +298,7 @@ export default function Dashboard() {
                   variant="h6"
                   component="h1"
                   color="primary"
-                  style={{ textAlign: "center" }}
+                  style={{ textAlign: "left" }}
                 >
                   {caso2.municipio}
                 </Typography>
@@ -306,22 +306,22 @@ export default function Dashboard() {
                   variant="h6"
                   component="h1"
                   color="primary"
-                  style={{ textAlign: "center" }}
+                  style={{ textAlign: "left" }}
                 >
                   {caso3.municipio}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Box className={classes.boxCasosBajo} component="div" m={1}>
                   <Typography variant="h5" component="span">
-                    Municipios com mais casos
+                    Municipios com menos casos
                   </Typography>
                 </Box>
                 <Typography
                   variant="h6"
                   component="h1"
                   color="primary"
-                  style={{ textAlign: "center" }}
+                  style={{ textAlign: "right" }}
                 >
                   {sau1.municipio}
                 </Typography>
@@ -329,7 +329,7 @@ export default function Dashboard() {
                   variant="h6"
                   component="h1"
                   color="primary"
-                  style={{ textAlign: "center" }}
+                  style={{ textAlign: "right" }}
                 >
                   {sau2.municipio}
                 </Typography>
@@ -337,7 +337,7 @@ export default function Dashboard() {
                   variant="h6"
                   component="h1"
                   color="primary"
-                  style={{ textAlign: "center" }}
+                  style={{ textAlign: "right" }}
                 >
                   {sau3.municipio}
                 </Typography>
